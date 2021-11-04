@@ -7,5 +7,19 @@ content-type: application/json
 	"password"	: "passwoord"
 }
 
-### Get a message
-GET http://localhost:3000/messages/123
+### Get a User
+GET http://localhost:3000/auth/3
+
+### Find All Users with a given email
+GET http://localhost:3000/auth?email=c@c.com
+
+### Delete a user given id
+DELETE http://localhost:3000/auth/1
+
+### Update a user
+DELETE http://localhost:3000/auth/2
+content-type: application/json
+
+{
+	"email"	: "c@c.com"
+}

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
@@ -13,11 +13,32 @@ export class UsersService {
     return this.repo.save(user);
   }
 
-  findOne(id: number) {}
+  findOne(id: number) {
+    return this.repo.findOne(id);
+  }
 
-  find() {}
+  find(email: string) {
+    return this.repo.find({ email });
+  }
 
-  update() {}
+  async update(id: number, attrs: Partial<User>) {
+    const user = await this.findOne(id);
+    if (!user) {
+      // このExceptionはHTTPに依存するので、あんまりよくないっぽい
+      // 独自エラー投げて、上位層でNotFoundすべきかな
+      throw new NotFoundException('user not found');
+    }
 
-  remove() {}
+    const newUser = { ...user, attrs };
+    return this.repo.save(newUser);
+  }
+
+  async remove(id: number) {
+    const user = await this.findOne(id);
+    if (!user) {
+      throw new NotFoundException('user not found');
+    }
+
+    return this.repo.remove(user);
+  }
 }
