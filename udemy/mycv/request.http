@@ -1,0 +1,11 @@
+### Create all messages
+POST http://localhost:3000/auth/signup
+content-type: application/json
+
+{
+	"email"	: "a@a.com",
+	"password"	: "passwoord"
+}
+
+### Get a message
+GET http://localhost:3000/messages/123
